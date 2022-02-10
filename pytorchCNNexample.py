@@ -26,7 +26,14 @@ class CNN(nn.Module):
         x = self.fc1(x)
         return x
 
+def save_checkpoint(state, filename="my_checkpoint.pth.tar"):
+    print("=> Saving checkpoint")
+    torch.save(state, filename)
 
+def load_checkpoint(checkpoint):
+    print("=> Loading checkpoint")
+    model.load_state_dict(checkpoint['state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer'])
 # DeBug Code
 # model = CNN()
 # x = torch.randn(64, 1, 28, 28)
@@ -41,7 +48,8 @@ in_channels = 1
 num_class = 10
 learning_rate = 0.001
 batch_size = 64
-num_epochs = 3
+num_epochs = 1
+load_model = True
 
 # Load Data
 train_dataset = datasets.MNIST(root="dataset/", train=True, transform=transforms.ToTensor(), download=True)
@@ -59,7 +67,12 @@ optimizer = optim.Adam(model.parameters(), lr = learning_rate)
 
 # Train Network
 
+if load_model:
+    load_checkpoint(torch.load("my_checkpoint.pth.tar"))
 for epoch in range(num_epochs):
+    if epoch % 3 == 0:
+        checkpoint = {'state_dict':model.state_dict(), 'optimizer':optimizer.state_dict()}
+        save_checkpoint(checkpoint)
     for batch_idx, (data, target) in enumerate(train_loader):
         data = data.to(device=device)
         target = target.to(device=device)
