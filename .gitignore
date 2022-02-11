@@ -1,2 +1,5 @@
 dataset
 emni.txt
+cats_dogs_resized
+*.csv
+*.tar
