@@ -21,7 +21,7 @@ batch_size = 64
 num_epochs = 1
 
 
-# Create RNN
+# Create GRU
 class GRU(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, num_class):
         super(GRU, self).__init__()

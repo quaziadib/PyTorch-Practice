@@ -21,7 +21,7 @@ batch_size = 64
 num_epochs = 1
 
 
-# Create RNN
+# Create LSTM
 class LSTM(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, num_class):
         super(LSTM, self).__init__()

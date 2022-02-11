@@ -9,10 +9,26 @@ import torchvision.transforms as transforms
 import torchvision 
 
 import sys
-model = torchvision.models.vgg16(pretrained=True)
-print(model)
+class Identity(nn.Module):
+    def __init__(self):
+        super(Identity, self).__init__()
 
-sys.exit()
+    def forward(self,x):
+        return x
+
+device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
+
+model = torchvision.models.vgg16(pretrained=True)
+
+for param in model.parameters():
+    param.requires_grad = False
+    
+model.avgpool = Identity()
+model.classifier = nn.Linear(512, 10)
+model.to(device)
+
+
+
 
 # DeBug Code
 # model = CNN()
@@ -21,7 +37,7 @@ sys.exit()
 # exit()
 
 # Set device
-device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
+
 #print(device)
 # Hyperoparameters
 in_channels = 1
@@ -32,14 +48,14 @@ num_epochs = 1
 load_model = True
 
 # Load Data
-train_dataset = datasets.MNIST(root="dataset/", train=True, transform=transforms.ToTensor(), download=True)
+train_dataset = datasets.CIFAR10(root="dataset/", train=True, transform=transforms.ToTensor(), download=True)
 train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
-test_dataset = datasets.MNIST(root="dataset/", train=False, transform=transforms.ToTensor(), download=True)
+test_dataset = datasets.CIFAR10(root="dataset/", train=False, transform=transforms.ToTensor(), download=True)
 test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=True)
 
 
 # Initialize network
-model = CNN().to(device)
+#model = CNN().to(device)
 
 # Loss and optimizer
 criterion = nn.CrossEntropyLoss()
