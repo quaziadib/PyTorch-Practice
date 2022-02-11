@@ -12,8 +12,8 @@ device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
 in_channels = 3
 num_class =  10
 learning_rate = 0.001
-batch_size = 64
-num_epochs = 1
+batch_size = 1
+num_epochs = 15
 
 dataset = CateAndDogsDataset(csv_file='cat_dogs\cats_dogs.csv', root_dir="cat_dogs\cats_dogs_resized", transform = transforms.ToTensor())
 
